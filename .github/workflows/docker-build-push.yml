@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image to ECR
 
 on:
   push:
@@ -9,6 +9,7 @@ permissions:
   id-token: write
   contents: read
 
+
 jobs:
 
   build:
@@ -17,39 +18,36 @@ jobs:
 
     steps:
 
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
 
-    - name: Configure AWS credentials
+    - name: Configure AWS credentials using OIDC
       uses: aws-actions/configure-aws-credentials@v4
       with:
-
         role-to-assume: arn:aws:iam::590519617819:role/github-actions-ecr-role
-
         aws-region: ap-south-1
 
 
-    - name: Login to ECR
+    - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v2
 
 
     - name: Build Docker Image
       run: |
         docker build \
-        -t static-website \
-        ./app
+          -t static-website \
+          ./app
 
 
-    - name: Tag Image
+    - name: Tag Docker Image
       run: |
+        docker tag \
+          static-website:latest \
+          590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest
 
-        docker tag static-website:latest \
-        590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest
 
-
-    - name: Push Image
+    - name: Push Docker Image to ECR
       run: |
-
         docker push \
-        590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest
+          590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest
