@@ -1,0 +1,81 @@
+name: Build and Push Docker Image
+
+
+on:
+
+  push:
+
+    branches:
+      - main
+
+
+
+permissions:
+
+  id-token: write
+
+  contents: read
+
+
+
+jobs:
+
+
+  build:
+
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+
+    - name: Checkout code
+
+      uses: actions/checkout@v4
+
+
+
+    - name: Configure AWS credentials
+
+      uses: aws-actions/configure-aws-credentials@v4
+
+      with:
+
+        role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/github-actions-ecr-role
+
+        aws-region: ap-south-1
+
+
+
+    - name: Login to ECR
+
+      uses: aws-actions/amazon-ecr-login@v2
+
+
+
+    - name: Build Docker Image
+
+      run: |
+
+        docker build \
+        -t static-website \
+        ./app
+
+
+
+    - name: Tag Image
+
+      run: |
+
+        docker tag static-website:latest \
+        <ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest
+
+
+
+    - name: Push Image
+
+      run: |
+
+        docker push \
+        590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest

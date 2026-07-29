@@ -1,0 +1,38 @@
+# Terraform files
+
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Terraform crash logs
+
+crash.log
+
+
+# AWS credentials
+
+.aws/
+
+
+# Docker files
+
+*.tar
+*.tar.gz
+
+
+# Environment files
+
+.env
+
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+
+# IDE files
+
+.vscode/
+.idea/
