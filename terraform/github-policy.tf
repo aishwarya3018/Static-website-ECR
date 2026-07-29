@@ -23,6 +23,14 @@ Resource = "*"
 
 },
 
+{
+  "Effect": "Allow",
+  "Action": [
+    "ssm:SendCommand",
+    "ssm:GetCommandInvocation"
+  ],
+  "Resource": "*"
+},
 
 {
 
