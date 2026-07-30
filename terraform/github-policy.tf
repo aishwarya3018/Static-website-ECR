@@ -24,6 +24,27 @@ Resource = "*"
 },
 
 {
+  Effect = "Allow"
+
+  Action = [
+    "ssm:SendCommand",
+    "ssm:GetCommandInvocation"
+  ]
+
+  Resource = "*"
+},
+
+{
+  Effect = "Allow"
+
+  Action = [
+    "ssm:SendCommand"
+  ]
+
+  Resource = "*"
+},
+
+{
   "Effect": "Allow",
   "Action": [
     "ssm:SendCommand",

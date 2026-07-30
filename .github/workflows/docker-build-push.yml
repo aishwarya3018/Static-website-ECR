@@ -56,3 +56,18 @@ jobs:
       run: |
         docker push \
           590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest
+
+    - name: Deploy to EC2 using SSM
+      run: |
+
+        aws ssm send-command \
+          --targets "Key=instanceIds,Values=i-03ab55b53be68b097" \
+          --document-name "AWS-RunShellScript" \
+          --comment "Deploy latest Docker image" \
+          --parameters 'commands=[
+            "docker pull 590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest",
+            "docker stop website || true",
+            "docker rm website || true",
+            "docker run -d --name website -p 80:80 590519617819.dkr.ecr.ap-south-1.amazonaws.com/static-website:latest"
+          ]' \
+          --region ap-south-1
